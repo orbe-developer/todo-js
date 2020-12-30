@@ -87,13 +87,13 @@ ulFilters.addEventListener('click', (event) => {
         const completed = element.classList.contains('completed');
 
         switch (filter) {
-            case 'Pendientes':
+            case 'Active':
                 if (completed) {
                     element.classList.add('hidden');
                 }
                 break;
 
-            case 'Completados':
+            case 'Completed':
                 if (!completed) {
                     element.classList.add('hidden');
                 }
