@@ -7,4 +7,4 @@ export const todoList = new TodoList();
 // todoList.todos.forEach(todo => createTodoHtml(todo));
 todoList.todos.forEach(createTodoHtml);
 
-console.log('todos: ', todoList.todos);
+// console.log('todos: ', todoList.todos);

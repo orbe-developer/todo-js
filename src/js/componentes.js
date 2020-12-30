@@ -32,7 +32,7 @@ export const createTodoHtml = (todo) => {
 // Add a new task when press the key 'Enter'
 txtInput.addEventListener('keyup', (event) => {
     if (event.keyCode === 13 && txtInput.value.length > 0) { // event.ksyCode === 13 means Enter
-        console.log(txtInput.value);
+        // console.log(txtInput.value);
         const newTodo = new Todo(txtInput.value);
         todoList.newTodo(newTodo);
         createTodoHtml(newTodo);
@@ -48,7 +48,7 @@ divTodoList.addEventListener('click', (event) => {
     const todoId = elementTodo.getAttribute('data-id');
 
     // console.log(todoId);
-    console.log('elementTodo', elementTodo);
+    // console.log('elementTodo', elementTodo);
 
     if (elementName.includes('input')) { // marking todo as completed
         todoList.markAsCompleted(todoId);
