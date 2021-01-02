@@ -50,4 +50,26 @@ export class TodoList {
             // this.todos = this.todos.map(obj => Todo.fromJson(obj))
         this.todos = this.todos.map(Todo.fromJson);
     }
+
+    getCantItemsLeft() {
+        let itemsLeft = this.todos.filter(todo => !todo.completed);
+        return itemsLeft.length;
+    }
+
+     existItemsCompleted() {
+        // let completedItems = this.todos.filter(todo => todo.completed);
+
+        let existCompletedItems = false;
+
+        for (const item of this.todos) {
+            if (item.completed) {
+                existCompletedItems = true;
+                break;
+            }
+        }
+
+        // return completedItems.length > 0;
+        return existCompletedItems;
+    } 
 }
+

@@ -7,6 +7,9 @@ const txtInput = document.querySelector('.new-todo');
 const btnDelCompleted = document.querySelector('.clear-completed');
 const ulFilters = document.querySelector('.filters');
 const anchorFilters = document.querySelectorAll('.filtro');
+const footer = document.querySelector('.footer');
+const todoCount = document.querySelector('.todo-count');
+
 
 
 export const createTodoHtml = (todo) => {
@@ -24,19 +27,74 @@ export const createTodoHtml = (todo) => {
     div.innerHTML = htmlTodo;
 
     divTodoList.append(div.firstElementChild);
+
+    footer.style.display = 'block';
+
+    setTodoCountSpan();
+    
     return div.firstChild;
 }
 
+
+
+export const createFooter = () => {
+    const cant = todoList.getCantItemsLeft();
+    const footerHtml = `
+     <span class="todo-count"><strong>${cant}</strong> (${cant} == 0 || ${cant} > 0 ) ? items left : item left</span>
+    `
+    
+    const footerElement = document.createElement('footer');
+    footerElement.innerHTML = footerHtml;
+
+    this.footer.append(footerElement);
+}
+
+
+export const showsFooter = () => {
+    if (todoList.todos.length > 0) {
+        footer.style.display = 'block';
+    } else {
+        footer.style.display = 'none';
+    } 
+}
+
+export const showsBtnCompleted = () => {
+    btnDelCompleted.style.display = 'block';
+}
+
+export const hideBtnCompleted = () => {
+    btnDelCompleted.style.display = 'none';
+}
+
+export const setTodoCountSpan = () => {
+    /* (todoList.getCantItemsLeft() == 0 || todoList.getCantItemsLeft() > 1) 
+    ? todoCount.textContent = 'items left'
+    : todoCount.textContent = 'item left'; */
+
+    let canItemsLeft = todoList.getCantItemsLeft();
+    
+    (canItemsLeft === 0 || canItemsLeft > 1)
+    ? todoCount.innerHTML = `<span class="todo-count"><strong>${canItemsLeft}</strong> items left</span>`
+    : todoCount.innerHTML = `<span class="todo-count"><strong>${canItemsLeft}</strong> item left</span>`;
+}
+    
 //--------------------- Events ------------------
 
 // Add a new task when press the key 'Enter'
 txtInput.addEventListener('keyup', (event) => {
+    
     if (event.keyCode === 13 && txtInput.value.length > 0) { // event.ksyCode === 13 means Enter
         // console.log(txtInput.value);
         const newTodo = new Todo(txtInput.value);
         todoList.newTodo(newTodo);
         createTodoHtml(newTodo);
-        txtInput.value = '';
+        txtInput.value = '';       
+        
+        showsFooter();
+        btnDelCompleted.style.display = 'none';
+        
+        setTodoCountSpan();
+    
     }
 });
 
@@ -47,17 +105,38 @@ divTodoList.addEventListener('click', (event) => {
     const elementTodo = event.target.parentElement.parentElement; // li
     const todoId = elementTodo.getAttribute('data-id');
 
-    // console.log(todoId);
-    // console.log('elementTodo', elementTodo);
 
     if (elementName.includes('input')) { // marking todo as completed
         todoList.markAsCompleted(todoId);
         elementTodo.classList.toggle('completed');
 
+
+        showsFooter();
+    
     } else if (elementName.includes('button')) { // deleting todo
         todoList.deleteTodo(todoId);
         divTodoList.removeChild(elementTodo);
+
+        showsFooter();
     }
+    
+    let showsBtn = false;
+    for (const elem of divTodoList.children) {
+        if (elem.classList.contains('completed')) {
+            showsBtn = true;
+            break;            
+        }
+    }
+
+    if(showsBtn) {
+        btnDelCompleted.style.display = 'block';
+    } else {
+        btnDelCompleted.style.display = 'none';
+    }   
+    
+    setTodoCountSpan();
+    
+    
 });
 
 btnDelCompleted.addEventListener('click', () => {
@@ -69,7 +148,11 @@ btnDelCompleted.addEventListener('click', () => {
                 divTodoList.removeChild(element);
             }
         }
+
+        btnDelCompleted.style.display = 'none';
+        showsFooter();
     }
+
 });
 
 ulFilters.addEventListener('click', (event) => {
@@ -101,3 +184,4 @@ ulFilters.addEventListener('click', (event) => {
     }
 
 });
+
